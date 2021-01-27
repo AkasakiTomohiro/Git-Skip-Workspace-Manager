@@ -1,19 +1,18 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import { config } from './config';
+import { config } from './LoadSettingJson';
 import os = require('os');
 
-let myStatusBarItem: vscode.StatusBarItem;
-let flag: boolean = true;
-let channel: vscode.OutputChannel;
 import { execSync } from 'child_process';
+import { createOutputChannel, outChannel } from './OutputChannel';
+import { createStatusBar } from './StatusBar';
+import { createCommand } from './command';
+import { ExtensionContext, workspace } from 'vscode';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
 
-	const myCommandId = 'git-skip-workspace-manager.action';
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "git-skip-workspace-manager" is now active!');
@@ -21,19 +20,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand(myCommandId, gitSkipWorkspaceAction);
 
-	context.subscriptions.push(disposable);
+	createCommand(context);
+	createStatusBar(context);
+	createOutputChannel();
 
-	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
-	myStatusBarItem.command = myCommandId;
-	context.subscriptions.push(myStatusBarItem);
-
-	myStatusBarItem.text = "Git Skip Workspace";
-	myStatusBarItem.show();
-
-	channel = vscode.window.createOutputChannel("Git Skip Workspace");
-	channel.show();
 	config();
 	getSkipWorkspaceFiles();
 }
@@ -42,8 +33,8 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 function getSkipWorkspaceFiles(): string[] {
-	const workspace = vscode.workspace.workspaceFolders;
-	if(workspace !== undefined) {
+	const workspaceFolders = workspace.workspaceFolders;
+	if(workspaceFolders !== undefined) {
 		var command = "";
 		switch(os.type()) {
 			case "Windows_NT":
@@ -54,36 +45,18 @@ function getSkipWorkspaceFiles(): string[] {
 				break;
 		}
 		try{
-			channel.appendLine(command);
+			outChannel.appendLine(command);
 			const child = execSync(command, {
-				cwd: `${workspace[0].uri.fsPath}`
+				cwd: `${workspaceFolders[0].uri.fsPath}`
 			});
 			const result = Buffer.from(child).toString();
-			channel.appendLine(result);
+			outChannel.appendLine(result);
 			return result.split(os.EOL);
 		}catch(e){
-			channel.appendLine("Not Skip Workspace");
+			outChannel.appendLine("Not Skip Workspace");
 			return [];
 		}
 	}
 	return [];
 }
 
-function gitSkipWorkspaceAction():void {
-	if(flag) {
-		gitSkipWorkspace();
-	}else{
-		gitNoSkipWorkspace();
-	}
-	flag = !flag;
-}
-
-function gitSkipWorkspace():void {
-	vscode.window.showInformationMessage('Git Skip Workspace');
-	myStatusBarItem.text = "Git No Skip Workspace";
-}
-
-function gitNoSkipWorkspace():void {
-	vscode.window.showInformationMessage('Git No Skip Workspace');
-	myStatusBarItem.text = "Git Skip Workspace";
-}
