@@ -1,7 +1,7 @@
 {
-  "name": "git-skip-workspace-manager",
-	"displayName": "Git Skip Workspace Manager",
-	"description": "Managing the Git Skip Workspace",
+	"name": "git-skip-worktree-manager",
+	"displayName": "Git Skip Worktree Manager",
+	"description": "Managing the Git Skip Worktree",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.52.0"
@@ -16,32 +16,72 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "git-skip-workspace-manager.disableAction",
-				"title": "Git Skip Workspace Disable"
+				"command": "git-skip-worktree-manager.disableAction",
+				"title": "Git Skip Worktree Disable"
 			},
 			{
-				"command": "git-skip-workspace-manager.reloadAction",
-				"title": "Git Skip Workspace Reload"
+				"command": "git-skip-worktree-manager.reloadAction",
+				"title": "Git Skip Worktree Reload"
+			},
+			{
+				"command": "skipWorktree.refreshEntry",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
 			}
-    ],
-    "configuration": {
-      "title": "Git Skip Workspace",
-      "properties": {
-        "gitSkipWorkspaceManager.paths": {
-          "type": "array",
-          "default": [],
-          "scope": "window"
-        }
-      }
-    }
+		],
+		"configuration": {
+			"title": "Git Skip Worktree",
+			"properties": {
+				"gitSkipWorktreeManager.paths": {
+					"type": "array",
+					"default": [],
+					"scope": "window"
+				}
+			}
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "skipWorktree-explorer",
+					"title": "Git Skip Worktree Manager",
+					"icon": "media/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"skipWorktree-explorer": [
+				{
+					"id": "skipWorktreeTrue",
+					"name": "Git Update Index Skip Worktree",
+					"icon": "media/icon.svg"
+				},
+				{
+					"id": "skipWorktreeFalse",
+					"name": "Git Update Index No Skip Worktree",
+					"icon": "media/icon.svg"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "skipWorktree.refreshEntry",
+					"when": "view == skipWorktreeTrue || view == skipWorktreeFalse",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run package",
 		"compile": "webpack --config ./build/node-extension.webpack.config.js",
-		"watch": "webpack --watch --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --config ./build/node-extension.webpack.config.js",
 		"package": "webpack --mode production --devtool hidden-source-map --config ./build/node-extension.webpack.config.js",
 		"test-compile": "tsc -p ./",
-		"test-watch": "tsc -watch -p ./",
+		"test-watch": "tsc -p ./",
 		"pretest": "yarn run test-compile && yarn run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"

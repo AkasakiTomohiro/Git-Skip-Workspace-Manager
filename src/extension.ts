@@ -4,19 +4,19 @@ import { config } from './LoadSettingJson';
 
 import { ExtensionContext } from 'vscode';
 import { Container } from './Container';
-import { WorkspaceState } from './WorkspaceState';
+import { WorktreeState } from './WorktreeState';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
 
 	Container.create(context);
-	WorkspaceState.load();
+	WorktreeState.load();
 	Container.setup();
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "git-skip-workspace-manager" is now active!');
+	console.log('Congratulations, your extension "git-skip-worktree-manager" is now active!');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
