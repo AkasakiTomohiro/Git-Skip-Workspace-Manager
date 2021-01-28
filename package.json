@@ -16,8 +16,12 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "git-skip-workspace-manager.action",
-				"title": "Hello World"
+				"command": "git-skip-workspace-manager.disableAction",
+				"title": "Git Skip Workspace Disable"
+			},
+			{
+				"command": "git-skip-workspace-manager.reloadAction",
+				"title": "Git Skip Workspace Reload"
 			}
     ],
     "configuration": {
