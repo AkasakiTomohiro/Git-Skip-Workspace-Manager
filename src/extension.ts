@@ -4,17 +4,14 @@ import { config } from './LoadSettingJson';
 
 import { ExtensionContext } from 'vscode';
 import { Container } from './Container';
-import { execSync } from 'child_process';
-import { createOutputChannel, outChannel } from './OutputChannel';
-import { createStatusBar } from './StatusBar';
-import { createCommand } from './command';
-import { ExtensionContext, workspace } from 'vscode';
+import { WorkspaceState } from './WorkspaceState';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
 
 	Container.create(context);
+	WorkspaceState.load();
 	Container.setup();
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)

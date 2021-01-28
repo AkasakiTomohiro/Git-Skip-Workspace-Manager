@@ -10,6 +10,7 @@ import { WorkspaceState } from "./WorkspaceState";
 
 export class Container {
   public static readonly disableActionId = "git-skip-workspace-manager.disableAction";
+  public static readonly reloadActionId = "git-skip-workspace-manager.reloadAction";
 
   /** ExtensionContext */
   public static context: ExtensionContext;
@@ -37,6 +38,8 @@ export class Container {
   private static createCommand(): void {
     let disableAction = commands.registerCommand(Container.disableActionId, WorkspaceState.allSkipWorkspaceFileDisable);
     Container.context.subscriptions.push(disableAction);
+    let reloadAction = commands.registerCommand(Container.reloadActionId, WorkspaceState.getLocalSkipWorkspaceFiles);
+    Container.context.subscriptions.push(reloadAction);
   }
 
   // ####################################################################
