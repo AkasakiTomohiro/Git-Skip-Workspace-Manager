@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { EOL, type } from "os";
+import { type } from "os";
 import { workspace } from "vscode";
 import { Container } from "./Container";
 
@@ -68,7 +68,7 @@ export class WorktreeState {
       });
       const result = Buffer.from(child).toString();
       Container.outChannel.appendLine(result);
-      files = result.split(EOL);
+      files = result.split("\n").filter(f => f !== "");
     }catch(e){
       Container.outChannel.appendLine("No Skip Worktree");
       files = [];
@@ -76,14 +76,22 @@ export class WorktreeState {
 
     // 既にローカルでSkipWorktreeが登録されている場合は変数に設定する
     files.forEach(f => {
-      f = f.replace("S ", "");
-      const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === f);
+      const item = f.replace("S ", "");
+      const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === item);
+      console.log(`filePath: ${item}`);
       if(index === -1) {
-        WorktreeState.skipWorktreeFiles.push({ filePath: f, skipEnable: true });
+        WorktreeState.skipWorktreeFiles.push({ filePath: item, skipEnable: true });
       } else {
         WorktreeState.skipWorktreeFiles[index].skipEnable = true;
       }
     });
+    WorktreeState.skipWorktreeFiles.forEach(f => {
+      const index = files.findIndex(i => i.replace("S ", "") === f.filePath);
+      if(index === -1) {
+        f.skipEnable = false;
+      }
+    });
+    Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
   }
 }
 

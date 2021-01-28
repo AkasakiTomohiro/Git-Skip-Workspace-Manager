@@ -1,8 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { config } from './LoadSettingJson';
-
 import { ExtensionContext } from 'vscode';
+import { config } from './LoadSettingJson';
 import { Container } from './Container';
 import { WorktreeState } from './WorktreeState';
 

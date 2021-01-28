@@ -83,6 +83,7 @@ export class Container {
     window.registerTreeDataProvider('skipWorktreeFalse', Container.providerFalse);
 
     commands.registerCommand('skipWorktree.refreshEntry', () => {
+      WorktreeState.getLocalSkipWorktreeFiles();
       Container.providerTrue.refresh();
       Container.providerFalse.refresh();
     });

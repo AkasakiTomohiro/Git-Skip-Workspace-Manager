@@ -46,7 +46,7 @@
 			"activitybar": [
 				{
 					"id": "skipWorktree-explorer",
-					"title": "Git Skip Worktree Manager",
+					"title": "Git Update Index Manager",
 					"icon": "media/icon.svg"
 				}
 			]
@@ -55,12 +55,12 @@
 			"skipWorktree-explorer": [
 				{
 					"id": "skipWorktreeTrue",
-					"name": "Git Update Index Skip Worktree",
+					"name": "Skip Worktree",
 					"icon": "media/icon.svg"
 				},
 				{
 					"id": "skipWorktreeFalse",
-					"name": "Git Update Index No Skip Worktree",
+					"name": "No Skip Worktree",
 					"icon": "media/icon.svg"
 				}
 			]
