@@ -74,7 +74,6 @@ export class Container {
 
   private static createOutputChannel(): void {
     Container.outChannel = window.createOutputChannel("Git Skip Worktree");
-    Container.outChannel.show();
   }
 
   // ####################################################################
