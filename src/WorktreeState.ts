@@ -2,6 +2,8 @@ import { execSync } from "child_process";
 import { type } from "os";
 import { workspace } from "vscode";
 import { Container } from "./Container";
+var path = require('path');
+
 export class WorktreeState {
   public static skipWorktreeFiles: SkipWorktreeFile[];
   private static readonly skipWorktreeFileId = "skipWorktreeFileId";
@@ -24,7 +26,7 @@ export class WorktreeState {
     const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === filePath);
     if(index === -1) {
       if(WorktreeState.skipWorktree(filePath, true)){
-        WorktreeState.skipWorktreeFiles.push({ filePath: filePath, skipEnable: true });
+        WorktreeState.skipWorktreeFiles.push({ filePath: filePath, fileName: path.parse(filePath).base, skipEnable: true });
       }
     } else {
       if(WorktreeState.skipWorktree(filePath, false)){
@@ -84,7 +86,7 @@ export class WorktreeState {
       const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === item);
       console.log(`filePath: ${item}`);
       if(index === -1) {
-        WorktreeState.skipWorktreeFiles.push({ filePath: item, skipEnable: true });
+        WorktreeState.skipWorktreeFiles.push({ filePath: item, fileName: path.parse(item).base, skipEnable: true });
       } else {
         WorktreeState.skipWorktreeFiles[index].skipEnable = true;
       }
@@ -129,6 +131,11 @@ export type SkipWorktreeFile = {
    * ファイルパス
    */
   filePath: string;
+
+  /**
+   * ファイル名
+   */
+  fileName: string;
 
   /**
    * Skip Worktreeの対象とするか

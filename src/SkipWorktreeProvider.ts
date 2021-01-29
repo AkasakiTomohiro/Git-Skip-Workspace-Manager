@@ -28,7 +28,7 @@ export class SkipWorktreeItem extends TreeItem {
   public contextValue = 'skipWorktreeItem';
   
   public constructor(public readonly state: SkipWorktreeFile, public readonly collapsibleState: TreeItemCollapsibleState) {
-    super(state.filePath, collapsibleState);
+    super(state.fileName, collapsibleState);
     this.tooltip = state.filePath;
   }
 
