@@ -16,11 +16,11 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "git-skip-worktree-manager.disableAction",
+				"command": "skipWorktree.disableAction",
 				"title": "Git Skip Worktree Disable"
 			},
 			{
-				"command": "git-skip-worktree-manager.reloadAction",
+				"command": "skipWorktree.reloadAction",
 				"title": "Git Skip Worktree Reload"
 			},
 			{
@@ -46,6 +46,10 @@
 					"light": "resources/light/noSkip.svg",
 					"dark": "resources/dark/noSkip.svg"
 				}
+			},
+			{
+				"command": "skipWorktree.toggleAction",
+				"title": "Skip Worktree Toggle"
 			}
 		],
 		"configuration": {
@@ -99,6 +103,11 @@
 					"command": "skipWorktreeTrue.noSkipEntry",
 					"when": "view == skipWorktreeTrue && viewItem == skipWorktreeItem",
 					"group": "inline"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "skipWorktree.toggleAction"
 				}
 			]
 		}

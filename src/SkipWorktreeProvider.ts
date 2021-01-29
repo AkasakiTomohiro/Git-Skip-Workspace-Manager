@@ -33,6 +33,6 @@ export class SkipWorktreeItem extends TreeItem {
   }
 
   public toggle(): void {
-    WorktreeState.saveSkipWorktreeFile(this.state.filePath, !this.state.skipEnable);
+    WorktreeState.toggleSkipWorktreeFile(this.state.filePath);
   }
 }

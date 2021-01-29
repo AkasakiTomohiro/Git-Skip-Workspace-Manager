@@ -4,14 +4,20 @@ import {
   OutputChannel,
   StatusBarAlignment,
   StatusBarItem,
+  Uri,
   window,
+  workspace,
 } from "vscode";
+var path = require('path');
+var fs = require('fs');
+
 import { SkipWorktreeItem, SkipWorktreeProvider } from "./SkipWorktreeProvider";
 import { WorktreeState } from "./WorktreeState";
 
 export class Container {
-  public static readonly disableActionId = "git-skip-worktree-manager.disableAction";
-  public static readonly reloadActionId = "git-skip-worktree-manager.reloadAction";
+  public static readonly disableActionId = "skipWorktree.disableAction";
+  public static readonly reloadActionId = "skipWorktree.reloadAction";
+  public static readonly toggleActionId = "skipWorktree.toggleAction";
 
   /** ExtensionContext */
   public static context: ExtensionContext;
@@ -94,6 +100,20 @@ export class Container {
 
     commands.registerCommand('skipWorktree.refreshEntry', () => {
       WorktreeState.getLocalSkipWorktreeFiles();
+      Container.providerTrue.refresh();
+      Container.providerFalse.refresh();
+    });
+    commands.registerCommand(Container.toggleActionId, (item: Uri) => {
+      const worktreeFolders = workspace.workspaceFolders;
+      if(worktreeFolders === undefined) {
+        return;
+      }
+      if(fs.statSync(item.fsPath).isDirectory()) {
+        window.showInformationMessage('Supports file only!');
+        return;
+      }
+      const fsPath = path.relative(worktreeFolders[0].uri.fsPath, item.fsPath).replace(/\\/g, "/");
+      WorktreeState.toggleSkipWorktreeFile(fsPath);
       Container.providerTrue.refresh();
       Container.providerFalse.refresh();
     });

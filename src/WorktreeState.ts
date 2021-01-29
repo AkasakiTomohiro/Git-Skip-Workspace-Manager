@@ -2,7 +2,6 @@ import { execSync } from "child_process";
 import { type } from "os";
 import { workspace } from "vscode";
 import { Container } from "./Container";
-
 export class WorktreeState {
   public static skipWorktreeFiles: SkipWorktreeFile[];
   private static readonly skipWorktreeFileId = "skipWorktreeFileId";
@@ -11,6 +10,7 @@ export class WorktreeState {
    * ワークスペースの設定を読み出し
    */
   public static load(): void {
+    // Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, []);
     WorktreeState.skipWorktreeFiles = Container.context.workspaceState.get<SkipWorktreeFile[]>(WorktreeState.skipWorktreeFileId) ?? [];
     WorktreeState.getLocalSkipWorktreeFiles();
   }
@@ -20,16 +20,18 @@ export class WorktreeState {
    * @param filePath 対象とするファイルパス
    * @param skipEnable 変更履歴を監視するか
    */
-  public static saveSkipWorktreeFile(filePath: string, skipEnable: boolean): void {
-    if(WorktreeState.skipWorktree(filePath, skipEnable)) {
-      const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === filePath);
-      if(index === -1) {
-        WorktreeState.skipWorktreeFiles.push({ filePath: filePath, skipEnable: skipEnable });
-      } else {
-        WorktreeState.skipWorktreeFiles[index].skipEnable = skipEnable;
+  public static toggleSkipWorktreeFile(filePath: string): void {
+    const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === filePath);
+    if(index === -1) {
+      if(WorktreeState.skipWorktree(filePath, true)){
+        WorktreeState.skipWorktreeFiles.push({ filePath: filePath, skipEnable: true });
       }
-      Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
+    } else {
+      if(WorktreeState.skipWorktree(filePath, false)){
+        WorktreeState.skipWorktreeFiles[index].skipEnable = false;
+      }
     }
+    Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
   }
 
   /**
