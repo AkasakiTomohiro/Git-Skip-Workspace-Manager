@@ -25,7 +25,14 @@ export class SkipWorktreeProvider implements TreeDataProvider<SkipWorktreeItem> 
 }
 
 export class SkipWorktreeItem extends TreeItem {
+  public contextValue = 'skipWorktreeItem';
+  
   public constructor(public readonly state: SkipWorktreeFile, public readonly collapsibleState: TreeItemCollapsibleState) {
     super(state.filePath, collapsibleState);
+    this.tooltip = state.filePath;
+  }
+
+  public toggle(): void {
+    WorktreeState.saveSkipWorktreeFile(this.state.filePath, !this.state.skipEnable);
   }
 }

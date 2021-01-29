@@ -30,6 +30,22 @@
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
 				}
+			},
+			{
+				"command": "skipWorktreeFalse.skipEntry",
+				"title": "Skip",
+				"icon": {
+					"light": "resources/light/skip.svg",
+					"dark": "resources/dark/skip.svg"
+				}
+			},
+			{
+				"command": "skipWorktreeTrue.noSkipEntry",
+				"title": "No Skip",
+				"icon": {
+					"light": "resources/light/noSkip.svg",
+					"dark": "resources/dark/noSkip.svg"
+				}
 			}
 		],
 		"configuration": {
@@ -71,6 +87,18 @@
 					"command": "skipWorktree.refreshEntry",
 					"when": "view == skipWorktreeTrue || view == skipWorktreeFalse",
 					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "skipWorktreeFalse.skipEntry",
+					"when": "view == skipWorktreeFalse && viewItem == skipWorktreeItem",
+					"group": "inline"
+				},
+				{
+					"command": "skipWorktreeTrue.noSkipEntry",
+					"when": "view == skipWorktreeTrue && viewItem == skipWorktreeItem",
+					"group": "inline"
 				}
 			]
 		}

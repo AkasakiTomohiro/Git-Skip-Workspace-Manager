@@ -21,13 +21,15 @@ export class WorktreeState {
    * @param skipEnable 変更履歴を監視するか
    */
   public static saveSkipWorktreeFile(filePath: string, skipEnable: boolean): void {
-    const item = WorktreeState.skipWorktreeFiles.find(i => i.filePath === filePath);
-    if(item === undefined) {
-      WorktreeState.skipWorktreeFiles.push({ filePath: filePath, skipEnable: skipEnable });
-    } else {
-      item.skipEnable = true;
+    if(WorktreeState.skipWorktree(filePath, skipEnable)) {
+      const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === filePath);
+      if(index === -1) {
+        WorktreeState.skipWorktreeFiles.push({ filePath: filePath, skipEnable: skipEnable });
+      } else {
+        WorktreeState.skipWorktreeFiles[index].skipEnable = skipEnable;
+      }
+      Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
     }
-    Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
   }
 
   /**
@@ -92,6 +94,28 @@ export class WorktreeState {
       }
     });
     Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
+  }
+
+  private static skipWorktree(filePath: string, skipEnable: boolean): boolean {
+    // ワークスペース開いているか
+    const worktreeFolders = workspace.workspaceFolders;
+    if(worktreeFolders === undefined) {
+      return false;
+    }
+
+    const command = skipEnable ? `git update-index --skip-worktree ${filePath}` : `git update-index --no-skip-worktree ${filePath}`;
+    
+    try{
+      Container.outChannel.appendLine(command);
+      execSync(command, {
+        cwd: `${worktreeFolders[0].uri.fsPath}`
+      });
+      return true;
+    }catch(e){
+      console.log(e);
+      Container.outChannel.appendLine("No Skip Worktree");
+      return false;
+    }
   }
 }
 

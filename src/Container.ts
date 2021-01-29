@@ -6,7 +6,7 @@ import {
   StatusBarItem,
   window,
 } from "vscode";
-import { SkipWorktreeProvider } from "./SkipWorktreeProvider";
+import { SkipWorktreeItem, SkipWorktreeProvider } from "./SkipWorktreeProvider";
 import { WorktreeState } from "./WorktreeState";
 
 export class Container {
@@ -78,9 +78,19 @@ export class Container {
   private static createProvider(): void {
     Container.providerTrue = new SkipWorktreeProvider(true);
     window.registerTreeDataProvider('skipWorktreeTrue', Container.providerTrue);
+    commands.registerCommand('skipWorktreeTrue.noSkipEntry', (item: SkipWorktreeItem) => {
+      item.toggle();
+      Container.providerTrue.refresh();
+      Container.providerFalse.refresh();
+    });
     
     Container.providerFalse = new SkipWorktreeProvider(false);
     window.registerTreeDataProvider('skipWorktreeFalse', Container.providerFalse);
+    commands.registerCommand('skipWorktreeFalse.skipEntry', (item: SkipWorktreeItem) => {
+      item.toggle();
+      Container.providerTrue.refresh();
+      Container.providerFalse.refresh();
+    });
 
     commands.registerCommand('skipWorktree.refreshEntry', () => {
       WorktreeState.getLocalSkipWorktreeFiles();
