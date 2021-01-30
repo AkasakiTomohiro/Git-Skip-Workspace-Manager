@@ -3,7 +3,8 @@
 	"displayName": "Git Skip Worktree Manager",
 	"description": "Managing the Git Skip Worktree",
 	"publisher": "t-akasaki",
-	"version": "1.0.0",
+	"version": "1.0.1",
+	"icon": "images/icon.png",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
