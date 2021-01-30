@@ -14,7 +14,6 @@ export class WorktreeState {
    * ワークスペースの設定を読み出し
    */
   public static load(): void {
-    Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, []);
     WorktreeState.skipWorktreeFiles = Container.context.workspaceState.get<SkipWorktreeFile[]>(WorktreeState.skipWorktreeFileId) ?? [];
     WorktreeState.getLocalSkipWorktreeFiles();
   }
