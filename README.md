@@ -4,7 +4,7 @@ An extension to manage the `git update-index --skip-worktree` Git command.
 
 ## Features
 
-![Image](images\image.gif)
+![Image](https://github.com/AkasakiTomohiro/GitSkipWorktreeManager/blob/master/images/image.gif)
 
 The following three methods can be used to register a file for `skip-worktree`.
 
