@@ -1,8 +1,9 @@
 {
-  "name": "git-skip-workspace-manager",
-	"displayName": "Git Skip Workspace Manager",
-	"description": "Managing the Git Skip Workspace",
-	"version": "0.0.1",
+	"name": "git-skip-worktree-manager",
+	"displayName": "Git Skip Worktree Manager",
+	"description": "Managing the Git Skip Worktree",
+	"publisher": "t-akasaki",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
@@ -10,52 +11,133 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onStartupFinished"
 	],
+	"repository": {
+		"url": "https://github.com/AkasakiTomohiro/GitSkipWorktreeManager"
+	},
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "git-skip-workspace-manager.action",
-				"title": "Hello World"
+				"command": "skipWorktree.allItemDisableAction",
+				"title": "Git Skip Worktree Disable"
+			},
+			{
+				"command": "skipWorktree.refreshEntry",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "skipWorktreeFalse.skipEntry",
+				"title": "Skip",
+				"icon": {
+					"light": "resources/light/skip.svg",
+					"dark": "resources/dark/skip.svg"
+				}
+			},
+			{
+				"command": "skipWorktreeTrue.noSkipEntry",
+				"title": "No Skip",
+				"icon": {
+					"light": "resources/light/noSkip.svg",
+					"dark": "resources/dark/noSkip.svg"
+				}
+			},
+			{
+				"command": "skipWorktree.toggleAction",
+				"title": "Skip Worktree Toggle"
 			}
-    ],
-    "configuration": {
-      "title": "Git Skip Workspace",
-      "properties": {
-        "gitSkipWorkspaceManager.paths": {
-          "type": "array",
-          "default": [],
-          "scope": "window"
-        }
-      }
-    }
+		],
+		"configuration": {
+			"title": "Git Skip Worktree",
+			"properties": {
+				"gitSkipWorktreeManager.paths": {
+					"type": "array",
+					"default": [],
+					"scope": "window"
+				}
+			}
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "skipWorktree-explorer",
+					"title": "Git Update Index Manager",
+					"icon": "media/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"skipWorktree-explorer": [
+				{
+					"id": "skipWorktreeTrue",
+					"name": "Skip Worktree",
+					"icon": "media/icon.svg"
+				},
+				{
+					"id": "skipWorktreeFalse",
+					"name": "No Skip Worktree",
+					"icon": "media/icon.svg"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "skipWorktree.refreshEntry",
+					"when": "view == skipWorktreeTrue || view == skipWorktreeFalse",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "skipWorktreeFalse.skipEntry",
+					"when": "view == skipWorktreeFalse && viewItem == skipWorktreeItem",
+					"group": "inline"
+				},
+				{
+					"command": "skipWorktreeTrue.noSkipEntry",
+					"when": "view == skipWorktreeTrue && viewItem == skipWorktreeItem",
+					"group": "inline"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "skipWorktree.toggleAction"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run package",
 		"compile": "webpack --config ./build/node-extension.webpack.config.js",
-		"watch": "webpack --watch --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --config ./build/node-extension.webpack.config.js",
 		"package": "webpack --mode production --devtool hidden-source-map --config ./build/node-extension.webpack.config.js",
 		"test-compile": "tsc -p ./",
-		"test-watch": "tsc -watch -p ./",
+		"test-watch": "tsc -p ./",
 		"pretest": "yarn run test-compile && yarn run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.52.0",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.4",
 		"@types/node": "^12.11.7",
-		"eslint": "^7.15.0",
+		"@types/vscode": "^1.52.0",
 		"@typescript-eslint/eslint-plugin": "^4.9.0",
 		"@typescript-eslint/parser": "^4.9.0",
+		"eslint": "^7.15.0",
 		"glob": "^7.1.6",
 		"mocha": "^8.1.3",
+		"ts-loader": "^8.0.11",
 		"typescript": "^4.1.2",
 		"vscode-test": "^1.4.1",
-		"ts-loader": "^8.0.11",
 		"webpack": "^5.10.0",
-		"webpack-cli": "^4.2.0"
+		"webpack-cli": "^4.2.0",
+		"vsce": "^1.84.0"
 	}
 }

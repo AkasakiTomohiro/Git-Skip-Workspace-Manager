@@ -1,65 +1,36 @@
-# git-skip-workspace-manager README
+# Git Skip Worktree Manager README
 
-This is the README for your extension "git-skip-workspace-manager". After writing up a brief description, we recommend including the following sections.
+An extension to manage the `git update-index --skip-worktree` Git command.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+![Image](images\image.gif)
 
-For example if there is an image subfolder under your extension project workspace:
+The following three methods can be used to register a file for `skip-worktree`.
 
-\!\[feature X\]\(images/feature-x.png\)
+- Adding a file with the Git command
+- Right-click the file in Explorer and select `Skip Worktree Toggle`.
+- Define it in `gitSkipWorktreeManager.paths` in setting.json
+- On the `GIT UPDATE INDEX MANAGER` tab, click the `+` button next to the file name.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+If you want to disable all files registered in the SkipWorktree, click the `All Git Skip Worktree Disable` button on the status bar.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Have a Git version installed that can use `git update-index --skip-worktree`.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+By defining files in `gitSkipWorktreeManager.paths` as relative paths from the workspace, you can make them the default target files for the workspace.
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+``` setting.json
+{
+  "gitSkipWorktreeManager.paths": []
+}
+```
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release
