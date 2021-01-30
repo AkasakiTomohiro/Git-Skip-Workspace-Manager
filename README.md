@@ -35,3 +35,7 @@ By defining files in `gitSkipWorktreeManager.paths` as relative paths from the w
 ### 1.0.0
 
 Initial release
+
+### 1.0.1
+
+Add an icon
