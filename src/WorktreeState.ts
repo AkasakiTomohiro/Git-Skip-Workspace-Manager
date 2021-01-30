@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import { type } from "os";
-import { workspace } from "vscode";
+import { window, workspace } from "vscode";
 import { Container } from "./Container";
 import { loadSettingJson } from "./LoadSettingJson";
 import * as path from "path";
@@ -117,6 +117,20 @@ export class WorktreeState {
     });
 
     Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
+  }
+
+  public static deleteWorktree(filePath: string): void {
+    const config = loadSettingJson();
+    if(config.paths.findIndex(f => f === filePath) === -1) {
+      WorktreeState.skipWorktreeFiles = WorktreeState.skipWorktreeFiles.filter(f => f.filePath !== filePath);
+      WorktreeState.skipWorktree(filePath, false);
+      Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
+      Container.outChannel.appendLine(`Excluded files from management. [${filePath}]`);
+      window.showInformationMessage(`Excluded files from management. [${filePath}]`);
+    } else {
+      Container.outChannel.appendLine(`[${filePath}] files could not be excluded from management.\nThis file is specified as the target file in setting.json.`);
+      window.showInformationMessage(`[${filePath}] files could not be excluded from management.\nThis file is specified as the target file in setting.json.`);
+    }
   }
 
   private static skipWorktree(filePath: string, skipEnable: boolean): boolean {

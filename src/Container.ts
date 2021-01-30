@@ -109,5 +109,10 @@ export class Container {
       Container.providerTrue.refresh();
       Container.providerFalse.refresh();
     });
-  }
+	  commands.registerCommand('skipWorktree.deleteAction', (item: SkipWorktreeItem) => {
+      WorktreeState.deleteWorktree(item.state.filePath);
+      Container.providerTrue.refresh();
+      Container.providerFalse.refresh();
+    });
+}
 }
