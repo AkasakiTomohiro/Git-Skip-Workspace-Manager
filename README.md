@@ -14,6 +14,7 @@ The following three methods can be used to register a file for `skip-worktree`.
 - On the `GIT UPDATE INDEX MANAGER` tab, click the `+` button next to the file name.
 
 If you want to disable all files registered in the SkipWorktree, click the `All Git Skip Worktree Disable` button on the status bar.
+If you want to exclude a file from management, right-click the target file in the `GIT UPDATE INDEX MANAGER` tab and select `Delete`. However, you cannot delete the files defined in `gitSkipWorktreeManager.paths`.
 
 ## Requirements
 
