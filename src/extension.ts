@@ -1,7 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import { ExtensionContext } from 'vscode';
-import { config } from './LoadSettingJson';
 import { Container } from './Container';
 import { WorktreeState } from './WorktreeState';
 
@@ -19,8 +18,6 @@ export function activate(context: ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-
-	config();
 }
 
 // this method is called when your extension is deactivated

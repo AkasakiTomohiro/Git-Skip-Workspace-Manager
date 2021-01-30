@@ -2,7 +2,9 @@ import { execSync } from "child_process";
 import { type } from "os";
 import { workspace } from "vscode";
 import { Container } from "./Container";
-var path = require('path');
+import { loadSettingJson } from "./LoadSettingJson";
+import * as path from "path";
+import { statSync } from "fs";
 
 export class WorktreeState {
   public static skipWorktreeFiles: SkipWorktreeFile[];
@@ -12,7 +14,7 @@ export class WorktreeState {
    * ワークスペースの設定を読み出し
    */
   public static load(): void {
-    // Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, []);
+    Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, []);
     WorktreeState.skipWorktreeFiles = Container.context.workspaceState.get<SkipWorktreeFile[]>(WorktreeState.skipWorktreeFileId) ?? [];
     WorktreeState.getLocalSkipWorktreeFiles();
   }
@@ -86,7 +88,6 @@ export class WorktreeState {
     files.forEach(f => {
       const item = f.replace("S ", "");
       const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === item);
-      console.log(`filePath: ${item}`);
       if(index === -1) {
         WorktreeState.skipWorktreeFiles.push({ filePath: item, fileName: path.parse(item).base, skipEnable: true });
       } else {
@@ -99,6 +100,23 @@ export class WorktreeState {
         f.skipEnable = false;
       }
     });
+
+    // 設定ファイルに記載のあるファイル群を設定に追加する
+    const config = loadSettingJson();
+    Container.outChannel.appendLine("Configuration Load");
+    config.paths.forEach(f => {
+      const index = WorktreeState.skipWorktreeFiles.findIndex(i => i.filePath === f);
+      if(index === -1) {
+        // 追加する前にファイルが存在しているかを確認し、ある場合はリストに追加する
+        try {
+          statSync(`${worktreeFolders[0].uri.fsPath}/${f}`);
+          WorktreeState.skipWorktreeFiles.push({ filePath: f, fileName: path.parse(f).base, skipEnable: false });
+        } catch (e) {
+          Container.outChannel.appendLine(`No Such File: ${f}`);
+        }
+      }
+    });
+
     Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
   }
 
@@ -118,7 +136,6 @@ export class WorktreeState {
       });
       return true;
     }catch(e){
-      console.log(e);
       Container.outChannel.appendLine("No Skip Worktree");
       return false;
     }
