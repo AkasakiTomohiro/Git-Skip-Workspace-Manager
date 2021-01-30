@@ -29,8 +29,8 @@ export class WorktreeState {
         WorktreeState.skipWorktreeFiles.push({ filePath: filePath, fileName: path.parse(filePath).base, skipEnable: true });
       }
     } else {
-      if(WorktreeState.skipWorktree(filePath, false)){
-        WorktreeState.skipWorktreeFiles[index].skipEnable = false;
+      if(WorktreeState.skipWorktree(filePath, !WorktreeState.skipWorktreeFiles[index].skipEnable)){
+        WorktreeState.skipWorktreeFiles[index].skipEnable = !WorktreeState.skipWorktreeFiles[index].skipEnable;
       }
     }
     Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
@@ -42,7 +42,9 @@ export class WorktreeState {
   public static allSkipWorktreeFileDisable(): void {
     WorktreeState.skipWorktreeFiles.forEach(f => {
       f.skipEnable = false;
+      WorktreeState.skipWorktree(f.filePath, f.skipEnable);
     });
+
     Container.context.workspaceState.update(WorktreeState.skipWorktreeFileId, WorktreeState.skipWorktreeFiles);
   }
 

@@ -16,12 +16,8 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "skipWorktree.disableAction",
+				"command": "skipWorktree.allItemDisableAction",
 				"title": "Git Skip Worktree Disable"
-			},
-			{
-				"command": "skipWorktree.reloadAction",
-				"title": "Git Skip Worktree Reload"
 			},
 			{
 				"command": "skipWorktree.refreshEntry",

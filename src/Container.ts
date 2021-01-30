@@ -15,10 +15,6 @@ import { SkipWorktreeItem, SkipWorktreeProvider } from "./SkipWorktreeProvider";
 import { WorktreeState } from "./WorktreeState";
 
 export class Container {
-  public static readonly disableActionId = "skipWorktree.disableAction";
-  public static readonly reloadActionId = "skipWorktree.reloadAction";
-  public static readonly toggleActionId = "skipWorktree.toggleAction";
-
   /** ExtensionContext */
   public static context: ExtensionContext;
 
@@ -40,18 +36,15 @@ export class Container {
     Container.createProvider();
   }
 
-  public static setup(): void {
-
-  }
-
   // ####################################################################
   // ### Command
   // ####################################################################
   private static createCommand(): void {
-    let disableAction = commands.registerCommand(Container.disableActionId, WorktreeState.allSkipWorktreeFileDisable);
-    Container.context.subscriptions.push(disableAction);
-    let reloadAction = commands.registerCommand(Container.reloadActionId, WorktreeState.getLocalSkipWorktreeFiles);
-    Container.context.subscriptions.push(reloadAction);
+    commands.registerCommand("skipWorktree.allItemDisableAction", () => {
+      WorktreeState.allSkipWorktreeFileDisable();
+      Container.providerTrue.refresh();
+      Container.providerFalse.refresh();
+    });
   }
 
   // ####################################################################
@@ -62,7 +55,7 @@ export class Container {
     Container.myStatusBarItem = window.createStatusBarItem(
       StatusBarAlignment.Left
     );
-    Container.myStatusBarItem.command = Container.disableActionId;
+    Container.myStatusBarItem.command = "skipWorktree.allItemDisableAction";
     Container.context.subscriptions.push(Container.myStatusBarItem);
     Container.myStatusBarItem.text = "All Git Skip Worktree Disable";
     Container.myStatusBarItem.show();
@@ -102,7 +95,7 @@ export class Container {
       Container.providerTrue.refresh();
       Container.providerFalse.refresh();
     });
-    commands.registerCommand(Container.toggleActionId, (item: Uri) => {
+    commands.registerCommand("skipWorktree.toggleAction", (item: Uri) => {
       const worktreeFolders = workspace.workspaceFolders;
       if(worktreeFolders === undefined) {
         return;
