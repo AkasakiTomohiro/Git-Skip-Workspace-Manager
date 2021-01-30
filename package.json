@@ -13,6 +13,9 @@
 	"activationEvents": [
 		"onStartupFinished"
 	],
+	"repository": {
+		"url": "https://github.com/AkasakiTomohiro/GitSkipWorktreeManager"
+	},
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
