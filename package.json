@@ -50,6 +50,10 @@
 			{
 				"command": "skipWorktree.toggleAction",
 				"title": "Skip Worktree Toggle"
+			},
+			{
+				"command": "skipWorktree.deleteAction",
+				"title": "Delete"
 			}
 		],
 		"configuration": {
@@ -103,6 +107,14 @@
 					"command": "skipWorktreeTrue.noSkipEntry",
 					"when": "view == skipWorktreeTrue && viewItem == skipWorktreeItem",
 					"group": "inline"
+				},
+				{
+					"command": "skipWorktree.deleteAction",
+					"when": "view == skipWorktreeTrue && viewItem == skipWorktreeItem"
+				},
+				{
+					"command": "skipWorktree.deleteAction",
+					"when": "view == skipWorktreeFalse && viewItem == skipWorktreeItem"
 				}
 			],
 			"explorer/context": [
